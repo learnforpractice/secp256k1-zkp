@@ -1223,6 +1223,8 @@ void test_point_times_order(const secp256k1_gej_t *point) {
     /* X * (point + G) + (order-X) * (pointer + G) = 0 */
     secp256k1_scalar_t x;
     secp256k1_scalar_t nx;
+    secp256k1_scalar_t zero = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 0);
+    secp256k1_scalar_t one = SECP256K1_SCALAR_CONST(0, 0, 0, 0, 0, 0, 0, 1);
     secp256k1_gej_t res1, res2;
     secp256k1_ge_t res3;
     unsigned char pub[65];
@@ -1240,6 +1242,16 @@ void test_point_times_order(const secp256k1_gej_t *point) {
     CHECK(secp256k1_eckey_pubkey_serialize(&res3, pub, &psize, 0) == 0);
     psize = 65;
     CHECK(secp256k1_eckey_pubkey_serialize(&res3, pub, &psize, 1) == 0);
+    /* check zero/one edge cases */
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &zero, &zero);
+    secp256k1_ge_set_gej(&res3, &res1);
+    CHECK(secp256k1_ge_is_infinity(&res3));
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &one, &zero);
+    secp256k1_ge_set_gej(&res3, &res1);
+    ge_equals_gej(&res3, point);
+    secp256k1_ecmult(&ctx->ecmult_ctx, &res1, point, &zero, &one);
+    secp256k1_ge_set_gej(&res3, &res1);
+    ge_equals_ge(&res3, &secp256k1_ge_const_g);
 }
 
 void run_point_times_order(void) {
