@@ -225,6 +225,32 @@ int secp256k1_ecdsa_recover_compact(const secp256k1_context_t* ctx, const unsign
     return ret;
 }
 
+int secp256k1_point_multiply(unsigned char *point, int *pointlen, const unsigned char *scalar) {
+    int ret = 0;
+    int overflow = 0;
+    secp256k1_gej_t res;
+    secp256k1_ge_t pt;
+    secp256k1_scalar_t s;
+    DEBUG_CHECK(point != NULL);
+    DEBUG_CHECK(pointlen != NULL);
+    DEBUG_CHECK(scalar != NULL);
+
+    if (secp256k1_eckey_pubkey_parse(&pt, point, *pointlen)) {
+        secp256k1_scalar_set_b32(&s, scalar, &overflow);
+        if (overflow) {
+            ret = -2;
+        } else {
+            secp256k1_ecdh_point_multiply(&res, &pt, &s);
+            secp256k1_ge_set_gej(&pt, &res);
+            ret = secp256k1_eckey_pubkey_serialize(&pt, point, pointlen, *pointlen <= 33);
+        }
+    } else {
+        ret = -3;
+    }
+    secp256k1_scalar_clear(&s);
+    return ret;
+}
+
 int secp256k1_ec_seckey_verify(const secp256k1_context_t* ctx, const unsigned char *seckey) {
     secp256k1_scalar_t sec;
     int ret;

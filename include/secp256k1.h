@@ -217,6 +217,24 @@ SECP256K1_WARN_UNUSED_RESULT int secp256k1_ecdsa_recover_compact(
   int recid
 ) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3) SECP256K1_ARG_NONNULL(4) SECP256K1_ARG_NONNULL(5);
 
+
+/** Do an ellitic curve scalar multiplication in constant time.
+ *  Returns: 1: exponentiation was successful
+ *          -1: scalar was zero (cannot serialize output point)
+ *          -2: scalar overflow
+ *          -3: invalid input point
+ *  In:      scalar:   a 32-byte scalar with which to multiple the point
+ *  In/Out:  point:    pointer to 33 or 65 byte array containing an EC point
+ *                     which will be updated in place
+ *           pointlen: length of the point array, which will be updated by
+ *                     the multiplication
+ */
+SECP256K1_WARN_UNUSED_RESULT int secp256k1_point_multiply(
+  unsigned char *point,
+  int *pointlen,
+  const unsigned char *scalar
+) SECP256K1_ARG_NONNULL(1) SECP256K1_ARG_NONNULL(2) SECP256K1_ARG_NONNULL(3);
+
 /** Verify an ECDSA secret key.
  *  Returns: 1: secret key is valid
  *           0: secret key is invalid
