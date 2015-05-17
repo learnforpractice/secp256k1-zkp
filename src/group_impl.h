@@ -23,6 +23,19 @@ static const secp256k1_ge_t secp256k1_ge_const_g = SECP256K1_GE_CONST(
     0xFD17B448UL, 0xA6855419UL, 0x9C47D08FUL, 0xFB10D4B8UL
 );
 
+/** Alternative generator for secp256k1.
+ *  This is the sha256 of 'g' after DER encoding (without compression),
+ *  which happens to be a point on the curve.
+ *  sage: G2 = EllipticCurve ([F (0), F (7)]).lift_x(int(hashlib.sha256('0479be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8'.decode('hex')).hexdigest(),16))
+ *  sage: '%x %x'%G2.xy()
+ */
+static const secp256k1_ge_t secp256k1_ge_const_g2 = SECP256K1_GE_CONST(
+    0x50929b74UL, 0xc1a04954UL, 0xb78b4b60UL, 0x35e97a5eUL,
+    0x078a5a0fUL, 0x28ec96d5UL, 0x47bfee9aUL, 0xce803ac0UL,
+    0x31d3c686UL, 0x3973926eUL, 0x049e637cUL, 0xb1b5f40aUL,
+    0x36dac28aUL, 0xf1766968UL, 0xc30c2313UL, 0xf3a38904UL
+);
+
 static void secp256k1_ge_set_gej_zinv(secp256k1_ge_t *r, const secp256k1_gej_t *a, const secp256k1_fe_t *zi) {
     secp256k1_fe_t zi2; 
     secp256k1_fe_t zi3;

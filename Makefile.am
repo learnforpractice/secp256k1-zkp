@@ -40,6 +40,10 @@ noinst_HEADERS += src/hash_impl.h
 noinst_HEADERS += src/field.h
 noinst_HEADERS += src/field_impl.h
 noinst_HEADERS += src/bench.h
+noinst_HEADERS += src/borromean.h
+noinst_HEADERS += src/borromean_impl.h
+noinst_HEADERS += src/rangeproof.h
+noinst_HEADERS += src/rangeproof_impl.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libsecp256k1.pc
@@ -51,7 +55,7 @@ libsecp256k1_la_LIBADD = $(SECP_LIBS)
 
 noinst_PROGRAMS =
 if USE_BENCHMARK
-noinst_PROGRAMS += bench_verify bench_recover bench_sign bench_internal bench_ecdh
+noinst_PROGRAMS += bench_verify bench_recover bench_sign bench_rangeproof bench_internal bench_ecdh
 bench_verify_SOURCES = src/bench_verify.c
 bench_verify_LDADD = libsecp256k1.la $(SECP_LIBS)
 bench_verify_LDFLAGS = -static
@@ -61,6 +65,9 @@ bench_recover_LDFLAGS = -static
 bench_sign_SOURCES = src/bench_sign.c
 bench_sign_LDADD = libsecp256k1.la $(SECP_LIBS)
 bench_sign_LDFLAGS = -static
+bench_rangeproof_SOURCES = src/bench_rangeproof.c
+bench_rangeproof_LDADD = libsecp256k1.la $(SECP_LIBS)
+bench_rangeproof_LDFLAGS = -static
 bench_internal_SOURCES = src/bench_internal.c
 bench_internal_LDADD = $(SECP_LIBS)
 bench_internal_LDFLAGS = -static
