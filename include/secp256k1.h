@@ -7,6 +7,10 @@ extern "C" {
 
 #include <stdint.h>
 
+#if defined (msvc)
+  #define __int128 __int64
+#endif
+
 # if !defined(SECP256K1_GNUC_PREREQ)
 #  if defined(__GNUC__)&&defined(__GNUC_MINOR__)
 #   define SECP256K1_GNUC_PREREQ(_maj,_min) \

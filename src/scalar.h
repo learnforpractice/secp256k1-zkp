@@ -40,10 +40,10 @@ static void secp256k1_scalar_set_int(secp256k1_scalar_t *r, unsigned int v);
 static void secp256k1_scalar_get_b32(unsigned char *bin, const secp256k1_scalar_t* a);
 
 /** Add two scalars together (modulo the group order). Returns whether it overflowed. */
-static int secp256k1_scalar_add(secp256k1_scalar_t *r, const secp256k1_scalar_t *a, const secp256k1_scalar_t *b);
+int secp256k1_scalar_add(secp256k1_scalar_t *r, const secp256k1_scalar_t *a, const secp256k1_scalar_t *b);
 
 /** Add a power of two to a scalar. The result is not allowed to overflow. */
-static void secp256k1_scalar_add_bit(secp256k1_scalar_t *r, unsigned int bit);
+void secp256k1_scalar_add_bit(secp256k1_scalar_t *r, unsigned int bit);
 
 /** Multiply two scalars (modulo the group order). */
 static void secp256k1_scalar_mul(secp256k1_scalar_t *r, const secp256k1_scalar_t *a, const secp256k1_scalar_t *b);
@@ -62,7 +62,7 @@ static void secp256k1_scalar_inverse(secp256k1_scalar_t *r, const secp256k1_scal
 static void secp256k1_scalar_inverse_var(secp256k1_scalar_t *r, const secp256k1_scalar_t *a);
 
 /** Compute the complement of a scalar (modulo the group order). */
-static void secp256k1_scalar_negate(secp256k1_scalar_t *r, const secp256k1_scalar_t *a);
+void secp256k1_scalar_negate(secp256k1_scalar_t *r, const secp256k1_scalar_t *a);
 
 /** Check whether a scalar equals zero. */
 static int secp256k1_scalar_is_zero(const secp256k1_scalar_t *a);
@@ -71,11 +71,11 @@ static int secp256k1_scalar_is_zero(const secp256k1_scalar_t *a);
 static int secp256k1_scalar_is_one(const secp256k1_scalar_t *a);
 
 /** Check whether a scalar is higher than the group order divided by 2. */
-static int secp256k1_scalar_is_high(const secp256k1_scalar_t *a);
+int secp256k1_scalar_is_high(const secp256k1_scalar_t *a);
 
 /** Make a scalar odd, by negating it if necessary, in constant time.
  * Returns -1 if the number was negated, 1 otherwise */
-static int secp256k1_scalar_wnaf_force_odd(secp256k1_scalar_t *a);
+int secp256k1_scalar_wnaf_force_odd(secp256k1_scalar_t *a);
 
 #ifndef USE_NUM_NONE
 /** Convert a scalar to a number. */
